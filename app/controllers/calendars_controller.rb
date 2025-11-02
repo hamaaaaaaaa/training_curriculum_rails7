@@ -3,7 +3,7 @@
 class CalendarsController < ApplicationController
   def index
     @plan = Plan.new
-    getWeek
+    get_week
   end
 
   def create
@@ -11,7 +11,7 @@ class CalendarsController < ApplicationController
     if @plan.save
       redirect_to action: :index
     else
-      getWeek
+      get_week
       render :index, status: :unprocessable_entity
     end
   end
@@ -22,7 +22,7 @@ class CalendarsController < ApplicationController
     params.require(:plan).permit(:date, :plan)
   end
 
-  def getWeek
+  def get_week
     wdays = ['(日)','(月)','(火)','(水)','(木)','(金)','(土)']
 
     # Dateオブジェクトは、日付を保持しています。下記のように`.today.day`とすると、今日の日付を取得できます。
@@ -45,7 +45,7 @@ class CalendarsController < ApplicationController
         wday_num = wday_num -7
       end
 
-      days = { month: (@todays_date + x).month, date: (@todays_date+x).day, plans: today_plans, :wday => wdays[wday_num]}
+      days = { month: (@todays_date + x).month, date: (@todays_date+x).day, plans: today_plans, wday: wdays[wday_num]}
       @week_days.push(days)
     end
   end
